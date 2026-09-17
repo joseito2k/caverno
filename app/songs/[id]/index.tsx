@@ -6,6 +6,7 @@ import { Icon } from "@/components/Icon";
 import { IconButton } from "@/components/IconButton";
 import SongMenu from "@/components/SongMenu";
 import ArrowBack from "@expo/material-symbols/arrow_back.xml";
+import Favorite from "@expo/material-symbols/favorite.xml";
 import { BlurView } from "@/components/styled";
 import BottomSheet, {
   BottomSheetScrollView,
@@ -22,6 +23,7 @@ import MusicNote from "@expo/material-symbols/music_note.xml";
 import SwapVert from "@expo/material-symbols/swap_vert.xml";
 import { useSong } from "@/hooks/useSong";
 import { useKeepAwake } from "expo-keep-awake";
+import { useLikesStore } from "@/store/useLikesStore";
 
 const CARD_SIZE = 300;
 const SNAP_POINTS = [150, 300, "100%"];
@@ -89,15 +91,16 @@ export default function Song() {
             className="flex-1"
           />
         </Animated.View>
-        <IconButton 
+        <IconButton
           onPress={router.back}
           source={ArrowBack}
           size={22}
           tint="#FFFFFF"
         />
 
-        <View className="w-8" />
+        <View className="flex-1" />
 
+        <LikeButton songId={id} />
         <SongMenu id={id} />
       </Animated.View>
 
@@ -229,3 +232,17 @@ const CustomHandle = () => (
     />
   </View>
 );
+
+function LikeButton({ songId }: { songId: string }) {
+  const isLiked = useLikesStore((s) => s.likedIds.includes(songId));
+  const toggle = useLikesStore((s) => s.toggle);
+
+  return (
+    <IconButton
+      onPress={() => toggle(songId)}
+      source={Favorite}
+      size={22}
+      tint={isLiked ? "#EF4444" : "#FFFFFF"}
+    />
+  );
+}

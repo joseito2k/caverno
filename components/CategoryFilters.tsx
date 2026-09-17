@@ -1,7 +1,10 @@
 import { Text } from "react-native";
 import { useStore } from "@/store/useStore";
+import { useLikesStore } from "@/store/useLikesStore";
 import { Pressable, FlatList } from "react-native-gesture-handler";
 import Animated from "react-native-reanimated";
+
+export const LIKES_FILTER_ID = "likes";
 
 export default function CategoryFilters({
   selectedCategory,
@@ -11,14 +14,20 @@ export default function CategoryFilters({
   setSelectedCategory: (categoryId: string | null) => void;
 }) {
   const categories = useStore((state) => state.categories);
+  const likedCount = useLikesStore((s) => s.likedIds.length);
 
   const toggleCategory = (categoryId: string) => {
     setSelectedCategory(selectedCategory === categoryId ? null : categoryId);
   };
 
+  const items = [
+    ...categories,
+    ...(likedCount > 0 ? [{ id: LIKES_FILTER_ID, name: "Likes" }] : []),
+  ];
+
   return (
     <FlatList
-      data={categories}
+      data={items}
       keyExtractor={(item) => item.id}
       horizontal
       showsHorizontalScrollIndicator={false}
@@ -40,7 +49,7 @@ export default function CategoryFilters({
               borderRadius: selectedCategory === item.id ? 8 : 9999,
               backgroundColor:
                 selectedCategory === item.id
-                  ? "#364153" 
+                  ? "#364153"
                   : "#1e2939",
               transitionProperty: ['borderRadius', 'backgroundColor'],
               transitionDuration: 300,

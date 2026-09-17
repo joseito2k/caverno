@@ -5,6 +5,8 @@ import { Icon } from "@/components/Icon";
 import Search from "@expo/material-symbols/search.xml";
 import Close from "@expo/material-symbols/close.xml";
 import { Song, useStore } from "@/store/useStore";
+import { useLikesStore } from "@/store/useLikesStore";
+import { LIKES_FILTER_ID } from "@/components/CategoryFilters";
 import {
   BottomSheetTextInput,
   useBottomSheetScrollableCreator,
@@ -19,21 +21,25 @@ export default function SongsList() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   const { songs: data } = useStore();
+  const likedIds = useLikesStore((s) => s.likedIds);
 
   const sections = (() => {
     if (!data) return { letters: [], data: [] };
 
     let songs = data;
-    // Filter by search keyword
-    if (searchKeyword) {
-      songs = data.filter((song) =>
-        song.title.toLowerCase().includes(searchKeyword.toLowerCase()),
-      );
+
+    // Filter by likes first (independent of search)
+    if (selectedCategory === LIKES_FILTER_ID) {
+      songs = songs.filter((song) => likedIds.includes(song.id));
+    } else if (selectedCategory) {
+      songs = songs.filter((song) => song.category === selectedCategory);
     }
 
-    // Filter by category
-    if (selectedCategory) {
-      songs = songs.filter((song) => song.category === selectedCategory);
+    // Then filter by search keyword
+    if (searchKeyword) {
+      songs = songs.filter((song) =>
+        song.title.toLowerCase().includes(searchKeyword.toLowerCase()),
+      );
     }
 
     // Group by first letter
