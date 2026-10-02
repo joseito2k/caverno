@@ -10,6 +10,7 @@
     "web": "expo start --web",
     "lint": "expo lint",
     "test:e2e": "export PATH=\"$PATH:$HOME/.maestro/bin\" && maestro test .maestro/launch-app.yaml",
+    "backup:firestore": "node ./scripts/backup-firestore.mjs",
     "prebuild": "expo prebuild -p android --clean"
   },
   "dependencies": {
