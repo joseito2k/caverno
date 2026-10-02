@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import AnimatedLogo from "@/components/AnimatedLogo";
 import { View, Text, Image } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
 import Circle from "@/components/Circle";
 import { TrebleClef, SemiQuavers, Quavers } from "@/components/icons";
 import ZStack from "@/components/ZStack";
 import { EaseView } from "@/components/styled";
 import { useStore } from "@/store/useStore";
-import SongsBottomSheet from "@/components/SongsBottomSheet";
+import SongsBottomSheet, { SONGS_SHEET_PEEK_HEIGHT } from "@/components/SongsBottomSheet";
 
 export default function Index() {
   const { subscribeCategories, subscribeSongs } = useStore();
@@ -37,97 +36,101 @@ export default function Index() {
         initialAnimate={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ type: "timing", duration: 400, delay: 400 }}
-        className="w-full"
+        className="w-full flex-1"
+
       >
-        <View className="items-center flex-row py-20 overflow-hidden">
-          <EaseView
-            initialAnimate={{ translateY: -20, translateX: 10, scale: 0.9 }}
-            animate={{ translateY: 0, translateX: 0, scale: 1 }}
-            transition={{ type: "timing", duration: 2000, loop: "reverse" }}
-            className="-ml-50 -mt-25"
-          >
+        <View className="flex-1">
+          <View className="absolute top-0 items-center flex-row py-20 overflow-hidden">
             <EaseView
-              initialAnimate={{ scale: 0, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ type: "timing", duration: 800, delay: 800 }}
-              style={{ filter: "blur(23px)" }}
+              initialAnimate={{ translateY: -20, translateX: 10, scale: 0.9 }}
+              animate={{ translateY: 0, translateX: 0, scale: 1 }}
+              transition={{ type: "timing", duration: 2000, loop: "reverse" }}
+              className="-ml-50 -mt-25"
             >
-              <Circle size={500} colors={["#1dc9de 0%", "#0a3b41 100%"]} />
+              <EaseView
+                initialAnimate={{ scale: 0, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ type: "timing", duration: 800, delay: 800 }}
+                style={{ filter: "blur(23px)" }}
+              >
+                <Circle size={500} colors={["#1dc9de 0%", "#0a3b41 100%"]} />
+              </EaseView>
             </EaseView>
-          </EaseView>
-          <EaseView
-            initialAnimate={{ translateY: -20, translateX: -20, scale: 0.8 }}
-            animate={{ translateY: 20, translateX: 0, scale: 1 }}
-            transition={{
-              type: "timing",
-              delay: 1400,
-              duration: 2000,
-              loop: "reverse",
-            }}
-            className="-ml-25 -mt-20"
-          >
             <EaseView
-              initialAnimate={{ scale: 0, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ type: "timing", duration: 800, delay: 600 }}
-              style={{ filter: "blur(30px)" }}
+              initialAnimate={{ translateY: -20, translateX: -20, scale: 0.8 }}
+              animate={{ translateY: 20, translateX: 0, scale: 1 }}
+              transition={{
+                type: "timing",
+                delay: 1400,
+                duration: 2000,
+                loop: "reverse",
+              }}
+              className="-ml-25 -mt-20"
             >
-              <Circle size={450} colors={["#41a9e3 10%", "#183f54 100%"]} />
-            </EaseView>
-          </EaseView>
-          <LinearGradient
-            colors={["transparent", "#000000"]}
-            start={[0.5, 0]}
-            end={[0.5, 1]}
-            className="absolute left-0 right-0 bottom-0"
-          />
-          <View className="absolute left-0 right-0 -bottom-24">
-            <ZStack className="absolute bottom-[50%] w-full items-center">
-              <AnimatedMusicSymbol position={[-120, -100]}>
-                <SemiQuavers size={30} color="rgba(255, 255, 255, 0.5)" />
-              </AnimatedMusicSymbol>
-              <AnimatedMusicSymbol position={[-50, -170]}>
-                <Quavers size={60} color="rgba(255, 255, 255, 0.5)" />
-              </AnimatedMusicSymbol>
-              <AnimatedMusicSymbol position={[40, -170]}>
-                <SemiQuavers size={30} color="rgba(255, 255, 255, 0.5)" />
-              </AnimatedMusicSymbol>
-              <AnimatedMusicSymbol position={[120, -150]}>
-                <TrebleClef size={20} color="rgba(255, 255, 255, 0.5)" />
-              </AnimatedMusicSymbol>
-            </ZStack>
-            <EaseView
-              initialAnimate={{ translateY: 0, opacity: 0, scale: 0.5 }}
-              animate={{ translateY: 50, opacity: 1, scale: 1 }}
-              transition={{ type: "timing", duration: 800, delay: 800 }}
-            >
-              <Image
-                source={require("../assets/images/keyboard.png")}
-                className="w-87.5 mx-auto"
-                resizeMode="contain"
-              />
+              <EaseView
+                initialAnimate={{ scale: 0, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ type: "timing", duration: 800, delay: 600 }}
+                style={{ filter: "blur(30px)" }}
+              >
+                <Circle size={450} colors={["#41a9e3 10%", "#183f54 100%"]} />
+              </EaseView>
             </EaseView>
           </View>
-        </View>
-        <View className="px-10 mt-20">
-          <EaseView
-            initialAnimate={{ opacity: 0, translateX: 20 }}
-            animate={{ opacity: 1, translateX: 0 }}
-            transition={{ type: "timing", duration: 500, delay: 1000 }}
+          <View 
+            className="flex-1 mt-20"
+            style={{ 
+              paddingBottom: SONGS_SHEET_PEEK_HEIGHT,
+            }}
           >
-            <Text className="text-white/70 text-xl font-bold tracking-wider mb-4">
-              Perform Your
-            </Text>
-          </EaseView>
-          <EaseView
-            initialAnimate={{ opacity: 0, translateX: 20 }}
-            animate={{ opacity: 1, translateX: 0 }}
-            transition={{ type: "timing", duration: 500, delay: 1200 }}
-          >
-            <Text className="text-white text-6xl font-bold tracking-wider">
-              Favourite Music
-            </Text>
-          </EaseView>
+            <View>
+              <ZStack className="absolute bottom-[50%] w-full items-center">
+                <AnimatedMusicSymbol position={[-120, -100]}>
+                  <SemiQuavers size={30} color="rgba(255, 255, 255, 0.5)" />
+                </AnimatedMusicSymbol>
+                <AnimatedMusicSymbol position={[-50, -170]}>
+                  <Quavers size={60} color="rgba(255, 255, 255, 0.5)" />
+                </AnimatedMusicSymbol>
+                <AnimatedMusicSymbol position={[40, -170]}>
+                  <SemiQuavers size={30} color="rgba(255, 255, 255, 0.5)" />
+                </AnimatedMusicSymbol>
+                <AnimatedMusicSymbol position={[120, -150]}>
+                  <TrebleClef size={20} color="rgba(255, 255, 255, 0.5)" />
+                </AnimatedMusicSymbol>
+              </ZStack>
+              <EaseView
+                initialAnimate={{ translateY: 0, opacity: 0, scale: 0.5 }}
+                animate={{ translateY: 50, opacity: 1, scale: 1 }}
+                transition={{ type: "timing", duration: 800, delay: 800 }}
+              >
+                <Image
+                  source={require("../assets/images/keyboard.png")}
+                  className="w-87.5 mx-auto"
+                  resizeMode="contain"
+                />
+              </EaseView>
+            </View>
+            <View className="px-10 -mt-20">
+              <EaseView
+                initialAnimate={{ opacity: 0, translateX: 20 }}
+                animate={{ opacity: 1, translateX: 0 }}
+                transition={{ type: "timing", duration: 500, delay: 1000 }}
+              >
+                <Text className="text-white/70 text-xl font-bold tracking-wider mb-4">
+                  Perform Your
+                </Text>
+              </EaseView>
+              <EaseView
+                initialAnimate={{ opacity: 0, translateX: 20 }}
+                animate={{ opacity: 1, translateX: 0 }}
+                transition={{ type: "timing", duration: 500, delay: 1200 }}
+              >
+                <Text className="text-white text-6xl font-bold tracking-wider">
+                  Favourite Music
+                </Text>
+              </EaseView>
+            </View>
+          </View>
         </View>
       </EaseView>
       {renderBottomSheet && <SongsBottomSheet />}

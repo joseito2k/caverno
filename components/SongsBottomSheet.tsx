@@ -7,7 +7,8 @@ import { useFocusEffect, router } from "expo-router";
 import { Icon } from "@/components/Icon";
 import Add from "@expo/material-symbols/add.xml";
 
-const SNAP_POINTS = [240, 600, "88%"];
+export const SONGS_SHEET_PEEK_HEIGHT = 240;
+const SNAP_POINTS = [SONGS_SHEET_PEEK_HEIGHT, 600, "88%"];
 
 export default function SongsBottomSheet() {
   const insets = useSafeAreaInsets();
