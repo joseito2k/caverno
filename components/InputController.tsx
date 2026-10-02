@@ -49,7 +49,6 @@ export default function InputController({
         isError={!!fieldState.error}
         singleLine={!isMultiline}
         minLines={isMultiline ? 4 : undefined}
-        maxLines={isMultiline ? 10 : undefined}
         textStyle={textStyle}
         colors={DARK_TEXTFIELD_COLORS}
         onFocusChanged={(focused) => {

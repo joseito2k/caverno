@@ -43,6 +43,8 @@ export default function SongForm(props: SongFormProps) {
   const { addSong, updateSong } = useStore();
   const { height } = useReanimatedKeyboardAnimation();
   const scrollRef = useRef<ScrollView>(null);
+  const contentRef = useRef<View>(null);
+  const lyricsRef = useRef<View>(null);
   const keyboardPadding = useAnimatedStyle(() => ({
     height: Math.max(-height.value, 0),
   }));
@@ -56,7 +58,19 @@ export default function SongForm(props: SongFormProps) {
   });
 
   const scrollToLyrics = useCallback(() => {
-    setTimeout(() => scrollRef.current?.scrollToEnd({ animated: true }), 250);
+    setTimeout(() => {
+      if (!contentRef.current || !lyricsRef.current) return;
+
+      lyricsRef.current.measureLayout(
+        contentRef.current,
+        (_x, y) =>
+          scrollRef.current?.scrollTo({
+            y: Math.max(y - 24, 0),
+            animated: true,
+          }),
+        () => {},
+      );
+    }, 250);
   }, []);
 
   const onSubmit = async () => {
@@ -127,7 +141,7 @@ export default function SongForm(props: SongFormProps) {
         className="flex-1"
         keyboardShouldPersistTaps="handled"
       >
-        <View className="px-6 pt-6 pb-8">
+        <View ref={contentRef} className="px-6 pt-6 pb-8">
           {/* Basic Information Card */}
           <FormCard title="Basic Information" icon={MusicNote}>
             <InputController
@@ -181,7 +195,8 @@ export default function SongForm(props: SongFormProps) {
           </FormCard>
 
           {/* Lyrics Card */}
-          <FormCard title="Lyrics" icon={EditNote}>
+          <View ref={lyricsRef}>
+            <FormCard title="Lyrics" icon={EditNote}>
               <InputController
                 name="lyrics"
                 label="Song Lyrics"
@@ -192,6 +207,7 @@ export default function SongForm(props: SongFormProps) {
                 onFocus={scrollToLyrics}
               />
             </FormCard>
+          </View>
         </View>
         <Animated.View style={keyboardPadding} />
       </ScrollView>
