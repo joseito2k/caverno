@@ -139,7 +139,7 @@ export default function Song() {
             >
               <View className="flex-row items-center gap-2">
                 {song?.style && (
-                  <View className="bg-gray-700/95 px-3 py-1 rounded-full">
+                  <View className="bg-gray-800/95 px-3 py-1 rounded-full">
                     <Text className="text-white text-sm font-medium">
                       {song.style}
                     </Text>
@@ -149,7 +149,7 @@ export default function Song() {
 
               <View className="flex-row items-center gap-3">
                 <View
-                  className="flex-row items-center bg-gray-700/95 px-3 py-1 rounded-full"
+                  className="flex-row items-center bg-gray-800/95 px-3 py-1 rounded-full"
                   style={{
                     display: song?.tempo && song?.tempo > 0 ? "flex" : "none",
                   }}
@@ -160,7 +160,7 @@ export default function Song() {
                   </Text>
                 </View>
                 <View
-                  className="flex-row items-center bg-gray-700/95 px-3 py-1 rounded-full"
+                  className="flex-row items-center bg-gray-800/95 px-3 py-1 rounded-full"
                   style={{ display: song?.transpose ? "flex" : "none" }}
                 >
                   <Icon source={SwapVert} size={18} tint="#FFFFFF" />
@@ -177,12 +177,12 @@ export default function Song() {
           </View>
 
           <BottomSheetScrollView>
-            <View className="p-6">
-              <View className="flex-row items-center gap-2 mb-4">
+            <View className="pt-6" style={{ backgroundColor: "#1f2937" }}>
+              <View className="flex-row items-center gap-2 mb-4 px-6">
                 <Icon source={MusicNote} size={24} tint="#FFFFFF" />
                 <Text className="text-white text-xl font-bold">Lyrics</Text>
               </View>
-              <View className="bg-gray-700/95 rounded-xl p-4">
+              <View className="px-6 py-4">
                 <Text className="text-white text-base leading-relaxed">
                   {song?.lyrics}
                 </Text>
@@ -213,14 +213,14 @@ const CustomBackground = ({
   }, []);
 
   return (
-    <Animated.View style={[style, { backgroundColor: "#1f2937" }, rStyles]} />
+    <Animated.View className="bg-gray-700" style={[style, rStyles]} />
   );
 };
 
 const CustomHandle = () => (
   <View
     testID="bottom-sheet-handle"
-    style={{ alignItems: "center", paddingVertical: 8 }}
+    style={{ alignItems: "center", paddingVertical: 8}}
   >
     <View
       style={{
