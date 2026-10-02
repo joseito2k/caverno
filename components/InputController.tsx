@@ -11,6 +11,7 @@ interface InputControllerProps {
   disabled?: boolean;
   required?: boolean;
   variant?: "default" | "large" | "multiline";
+  onFocus?: () => void;
 }
 
 export default function InputController({
@@ -21,6 +22,7 @@ export default function InputController({
   disabled,
   required,
   variant = "default",
+  onFocus,
 }: InputControllerProps) {
   const { field, fieldState } = useController({
     name,
@@ -50,6 +52,9 @@ export default function InputController({
         maxLines={isMultiline ? 10 : undefined}
         textStyle={textStyle}
         colors={DARK_TEXTFIELD_COLORS}
+        onFocusChanged={(focused) => {
+          if (focused) onFocus?.();
+        }}
       >
         <OutlinedTextField.Label>
           <Text>{label}</Text>

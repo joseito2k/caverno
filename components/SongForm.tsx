@@ -1,11 +1,7 @@
 import { useRef, useCallback } from "react";
 import { View, Text as RNText, ScrollView } from "react-native";
 import Animated, { useAnimatedStyle } from "react-native-reanimated";
-import { runOnJS } from "react-native-worklets";
-import {
-  useKeyboardHandler,
-  useReanimatedKeyboardAnimation,
-} from "react-native-keyboard-controller";
+import { useReanimatedKeyboardAnimation } from "react-native-keyboard-controller";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import { IconButton } from "@/components/IconButton";
@@ -59,20 +55,9 @@ export default function SongForm(props: SongFormProps) {
     defaultValues: isEdit ? props.song : DEFAULT_VALUES,
   });
 
-  const scrollToBottom = useCallback(() => {
-    scrollRef.current?.scrollToEnd({ animated: true });
+  const scrollToLyrics = useCallback(() => {
+    setTimeout(() => scrollRef.current?.scrollToEnd({ animated: true }), 250);
   }, []);
-
-  useKeyboardHandler({
-    onStart: (e) => {
-      "worklet";
-      if (e.height > 0) {
-        setTimeout(() => {
-          runOnJS(scrollToBottom)();
-        }, 100);
-      }
-    },
-  });
 
   const onSubmit = async () => {
     const data = getValues();
@@ -204,6 +189,7 @@ export default function SongForm(props: SongFormProps) {
                 control={control}
                 disabled={isSubmitting}
                 variant="multiline"
+                onFocus={scrollToLyrics}
               />
             </FormCard>
         </View>
