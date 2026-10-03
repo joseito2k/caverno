@@ -45,7 +45,6 @@ export default function RootLayout() {
               name="index"
               options={{ contentStyle: { backgroundColor: "black" } }}
             />
-            <Stack.Screen name="home" options={{ animation: "ios_from_left" }} />
             <Stack.Screen
               name="songs/[id]/index"
               options={{

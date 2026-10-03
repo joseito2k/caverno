@@ -1,34 +1,55 @@
 import React, { useEffect, useState } from "react";
 import AnimatedLogo from "@/components/AnimatedLogo";
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, ActivityIndicator, Alert } from "react-native";
 import Circle from "@/components/Circle";
 import { TrebleClef, SemiQuavers, Quavers } from "@/components/icons";
 import ZStack from "@/components/ZStack";
 import { EaseView } from "@/components/styled";
 import { useStore } from "@/store/useStore";
 import SongsBottomSheet, { SONGS_SHEET_PEEK_HEIGHT } from "@/components/SongsBottomSheet";
+import { GoogleSignInButton } from "@/components/GoogleSignInButton";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function Index() {
   const { subscribeCategories, subscribeSongs } = useStore();
   const [renderBottomSheet, setRenderBottomSheet] = useState(false);
+  const { isAuthenticated, isLoading: isAuthLoading, isSigningIn, signIn } = useAuth();
 
   useEffect(() => {
+    if (isAuthLoading) return;
+
+    if (!isAuthenticated) {
+      setRenderBottomSheet(false);
+      return;
+    }
+
     const unsubCategories = subscribeCategories();
     const unsubSongs = subscribeSongs();
-
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       setRenderBottomSheet(true);
     }, 1500);
 
     return () => {
       unsubCategories();
       unsubSongs();
+      clearTimeout(timer);
     };
-  }, [subscribeCategories, subscribeSongs]);
+  }, [isAuthenticated, isAuthLoading, subscribeCategories, subscribeSongs]);
+
+  const handleGoogleSignIn = async () => {
+    try {
+      await signIn();
+    } catch (error: any) {
+      Alert.alert("Sign in failed", error?.message ?? "Unable to sign in.");
+    }
+  };
 
   return (
     <View className="flex-1">
-      <View className="absolute top-0 left-0 right-0 bottom-0 z-10 w-full flex-1 justify-center items-center">
+      <View
+        pointerEvents="none"
+        className="absolute top-0 left-0 right-0 bottom-0 z-10 w-full flex-1 justify-center items-center"
+      >
         <AnimatedLogo />
       </View>
 
@@ -77,10 +98,10 @@ export default function Index() {
               </EaseView>
             </EaseView>
           </View>
-          <View 
+          <View
             className="flex-1 mt-20"
-            style={{ 
-              paddingBottom: SONGS_SHEET_PEEK_HEIGHT,
+            style={{
+              paddingBottom: isAuthenticated ? SONGS_SHEET_PEEK_HEIGHT : 24,
             }}
           >
             <View>
@@ -129,11 +150,26 @@ export default function Index() {
                   Favourite Music
                 </Text>
               </EaseView>
+
+              {!isAuthLoading && !isAuthenticated && (
+                <View className="mt-12">
+                  <EaseView
+                    initialAnimate={{ opacity: 0, translateY: 20 }}
+                    animate={{ opacity: 1, translateY: 0 }}
+                    transition={{ type: "timing", duration: 500, delay: 1200 }}
+                  >
+                    <GoogleSignInButton
+                      isLoading={isSigningIn}
+                      onPress={handleGoogleSignIn}
+                    />
+                  </EaseView>
+                </View>
+              )}
             </View>
           </View>
         </View>
       </EaseView>
-      {renderBottomSheet && <SongsBottomSheet />}
+      {isAuthenticated && renderBottomSheet && <SongsBottomSheet />}
     </View>
   );
 }

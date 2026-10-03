@@ -14,6 +14,7 @@ import {
 import { Pressable } from "react-native-gesture-handler";
 import CategoryFilters from "./CategoryFilters";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import UserProfileButton from "@/components/UserProfileButton";
 
 export default function SongsList() {
   const insets = useSafeAreaInsets();
@@ -74,7 +75,7 @@ export default function SongsList() {
     <>
       <View>
         <View className="px-8 py-2">
-          <View className="bg-gray-800 rounded-full px-4 py-1 flex-row items-center">
+          <View className="bg-gray-800 rounded-full pl-4 pr-1.25 py-1 flex-row items-center">
             <Icon source={Search} size={24} tint="#FFFFFF" />
             <BottomSheetTextInput
               testID="search-input"
@@ -86,10 +87,11 @@ export default function SongsList() {
             />
 
             {searchKeyword.length > 0 && (
-              <TouchableOpacity onPress={() => setSearchKeyword("")}>
+              <TouchableOpacity className="mr-4" onPress={() => setSearchKeyword("")}>
                 <Icon source={Close} size={24} tint="#FFFFFF" />
               </TouchableOpacity>
             )}
+            <UserProfileButton />
           </View>
         </View>
         <CategoryFilters
