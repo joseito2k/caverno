@@ -70,6 +70,8 @@ export default function SongsList() {
   })();
 
   const BottomSheetSectionList = useBottomSheetScrollableCreator();
+  const isEmpty = sections.data.length === 0;
+  const isLoading = useStore((state) => state.isLoading);
 
   return (
     <>
@@ -100,15 +102,37 @@ export default function SongsList() {
         />
       </View>
 
+      {!isLoading && isEmpty ? (
+        <View className="px-8 pt-4 pb-8">
+          <TouchableOpacity
+            onPress={() => router.push("/songs/add")}
+            className="flex-row items-center justify-center rounded-full bg-[#41a9e3]/90 px-5 py-3 gap-2"
+            activeOpacity={0.9}
+          >
+            <Text className="text-2xl text-white font-semibold">＋</Text>
+            <Text className="text-white text-base font-medium">
+              Add your first song
+            </Text>
+          </TouchableOpacity>
+        </View>
+      ) : null}
+
       <SectionList
         sections={sections.data}
         keyExtractor={(item: Song) => item.id}
         stickySectionHeadersEnabled
         renderItem={renderItem}
         renderSectionHeader={renderSectionHeader}
+        ListEmptyComponent={null}
         renderScrollComponent={BottomSheetSectionList}
         contentContainerStyle={{
           paddingBottom: insets.bottom + 16,
+          flexGrow: 1,
+          justifyContent: "flex-start",
+        }}
+        showsVerticalScrollIndicator={false}
+        style={{
+          flex: 1,
         }}
       />
     </>
