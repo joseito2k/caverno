@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, SectionList } from "react-native";
 import { router } from "expo-router";
 import { Icon } from "@/components/Icon";
@@ -21,8 +21,18 @@ export default function SongsList() {
   const [searchKeyword, setSearchKeyword] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
-  const { songs: data } = useStore();
+  const { songs: data, categories } = useStore();
   const likedIds = useLikesStore((s) => s.likedIds);
+
+  useEffect(() => {
+    if (
+      selectedCategory &&
+      selectedCategory !== LIKES_FILTER_ID &&
+      !categories.some((category) => category.id === selectedCategory)
+    ) {
+      setSelectedCategory(null);
+    }
+  }, [categories, selectedCategory]);
 
   const sections = (() => {
     if (!data) return { letters: [], data: [] };
@@ -71,7 +81,7 @@ export default function SongsList() {
 
   const BottomSheetSectionList = useBottomSheetScrollableCreator();
   const isEmpty = sections.data.length === 0;
-  const isLoading = useStore((state) => state.isLoading);
+  const isSongsLoading = useStore((state) => state.isSongsLoading);
 
   return (
     <>
@@ -102,7 +112,7 @@ export default function SongsList() {
         />
       </View>
 
-      {!isLoading && isEmpty ? (
+      {!isSongsLoading && isEmpty ? (
         <View className="px-8 pt-4 pb-8">
           <TouchableOpacity
             onPress={() => router.push("/songs/add")}

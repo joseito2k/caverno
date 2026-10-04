@@ -45,6 +45,7 @@ export default function RootLayout() {
               name="index"
               options={{ contentStyle: { backgroundColor: "black" } }}
             />
+            <Stack.Screen name="settings" options={{ headerShown: false }} />
             <Stack.Screen
               name="songs/[id]/index"
               options={{

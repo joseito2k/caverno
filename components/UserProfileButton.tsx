@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Alert, Image, Text, View } from "react-native";
 import AccountCircle from "@expo/material-symbols/account_circle.xml";
 import Logout from "@expo/material-symbols/logout.xml";
+import Settings from "@expo/material-symbols/settings.xml";
+import { router } from "expo-router";
 import { IconButton } from "@/components/IconButton";
 import {
   DropdownMenu,
@@ -27,6 +29,11 @@ export default function UserProfileButton() {
     }
   };
 
+  const handleOpenSettings = () => {
+    setShowMenu(false);
+    router.push("/settings");
+  };
+
   return (
     <View style={{ height: 44, position: "relative", width: 44 }}>
       <Host matchContents>
@@ -44,6 +51,14 @@ export default function UserProfileButton() {
             />
           </DropdownMenu.Trigger>
           <DropdownMenu.Items>
+            <DropdownMenuItem onClick={handleOpenSettings}>
+              <DropdownMenuItem.LeadingIcon>
+                <EuiIcon source={Settings} size={20} tint="#FFFFFF" />
+              </DropdownMenuItem.LeadingIcon>
+              <DropdownMenuItem.Text>
+                <Text className="text-white w-25">Settings</Text>
+              </DropdownMenuItem.Text>
+            </DropdownMenuItem>
             <DropdownMenuItem onClick={handleSignOut}>
               <DropdownMenuItem.LeadingIcon>
                 <EuiIcon source={Logout} size={20} tint="#FFFFFF" />
