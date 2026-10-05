@@ -21,8 +21,8 @@ export default function CategoryFilters({
   };
 
   const items = [
-    ...categories,
     ...(likedCount > 0 ? [{ id: LIKES_FILTER_ID, name: "Likes" }] : []),
+    ...categories,
   ];
 
   return (
