@@ -1,4 +1,11 @@
-import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
+import {
+  getAuth,
+  GoogleAuthProvider,
+  onAuthStateChanged,
+  signInWithCredential,
+  signOut,
+  type FirebaseAuthTypes,
+} from "@react-native-firebase/auth";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 
 GoogleSignin.configure({
@@ -9,7 +16,7 @@ GoogleSignin.configure({
 
 export const listenToAuthChanges = (
   callback: (user: FirebaseAuthTypes.User | null) => void
-) => auth().onUserChanged(callback);
+) => onAuthStateChanged(getAuth(), callback);
 
 export async function signInWithGoogle() {
   await GoogleSignin.hasPlayServices();
@@ -25,11 +32,11 @@ export async function signInWithGoogle() {
     throw new Error("Google Sign-In failed: no idToken returned.");
   }
 
-  const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-  await auth().signInWithCredential(googleCredential);
+  const googleCredential = GoogleAuthProvider.credential(idToken);
+  await signInWithCredential(getAuth(), googleCredential);
 }
 
 export async function signOutOfGoogle() {
-  await auth().signOut();
+  await signOut(getAuth());
   await GoogleSignin.signOut();
 }

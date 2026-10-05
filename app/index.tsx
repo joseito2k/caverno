@@ -58,7 +58,6 @@ export default function Index() {
         animate={{ opacity: 1 }}
         transition={{ type: "timing", duration: 400, delay: 400 }}
         className="w-full flex-1"
-
       >
         <View className="flex-1">
           <View className="absolute top-0 items-center flex-row py-20 overflow-hidden">
@@ -99,7 +98,7 @@ export default function Index() {
             </EaseView>
           </View>
           <View
-            className="flex-1 mt-20"
+            className="flex-1 mt-20 flex-cols justify-around"
             style={{
               paddingBottom: isAuthenticated ? SONGS_SHEET_PEEK_HEIGHT : 24,
             }}

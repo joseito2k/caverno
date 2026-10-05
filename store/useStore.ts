@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import auth from "@react-native-firebase/auth";
+import { getAuth } from "@react-native-firebase/auth";
 import {
   getFirestore,
   collection,
@@ -15,7 +15,7 @@ import {
   type FirebaseFirestoreTypes,
 } from "@react-native-firebase/firestore";
 
-const getCurrentUserId = () => auth().currentUser?.uid ?? null;
+const getCurrentUserId = () => getAuth().currentUser?.uid ?? null;
 
 export interface Song {
   id: string;
