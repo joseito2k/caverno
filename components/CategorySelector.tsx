@@ -8,6 +8,7 @@ import {
   type BottomSheetBackdropProps,
 } from "@gorhom/bottom-sheet";
 import { useController } from "react-hook-form";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Host, OutlinedTextField, Text, Icon as EuiIcon, useNativeState } from "@expo/ui/jetpack-compose";
 import { fillMaxWidth } from "@expo/ui/jetpack-compose/modifiers";
 import KeyboardArrowDown from "@expo/material-symbols/keyboard_arrow_down.xml";
@@ -46,6 +47,7 @@ export default function CategorySelector({
   label = "Category",
   required = false,
 }: CategorySelectorProps) {
+  const insets = useSafeAreaInsets();
   const sheetRef = useRef<BottomSheetModal>(null);
   const { categories } = useStore();
   const [isCreatingCategory, setIsCreatingCategory] = useState(false);
@@ -163,7 +165,8 @@ export default function CategorySelector({
       <BottomSheetModal
         ref={sheetRef}
         index={categories.length === 0 ? 1 : 0}
-        snapPoints={["72%", "90%"]}
+        snapPoints={["72%", "88%"]}
+        topInset={insets.top}
         onDismiss={handleSheetDismiss}
         enablePanDownToClose
         handleComponent={CustomHandle}
