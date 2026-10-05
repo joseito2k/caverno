@@ -9,18 +9,31 @@ import { useStore } from "@/store/useStore";
 import SongsBottomSheet, { SONGS_SHEET_PEEK_HEIGHT } from "@/components/SongsBottomSheet";
 import { GoogleSignInButton } from "@/components/GoogleSignInButton";
 import { useAuth } from "@/hooks/useAuth";
+import { useLikesStore } from "@/store/useLikesStore";
 
 export default function Index() {
   const { subscribeCategories, subscribeSongs } = useStore();
+  const subscribeLikes = useLikesStore((state) => state.subscribeLikes);
   const [renderBottomSheet, setRenderBottomSheet] = useState(false);
-  const { isAuthenticated, isLoading: isAuthLoading, isSigningIn, signIn } = useAuth();
+  const {
+    user,
+    isAuthenticated,
+    isLoading: isAuthLoading,
+    isSigningIn,
+    signIn,
+  } = useAuth();
+  const userId = user?.uid;
 
   useEffect(() => {
     if (isAuthLoading) return;
 
+    const unsubLikes = subscribeLikes((error) => {
+      Alert.alert("Likes unavailable", error.message);
+    });
+
     if (!isAuthenticated) {
       setRenderBottomSheet(false);
-      return;
+      return unsubLikes;
     }
 
     const unsubCategories = subscribeCategories();
@@ -32,9 +45,17 @@ export default function Index() {
     return () => {
       unsubCategories();
       unsubSongs();
+      unsubLikes();
       clearTimeout(timer);
     };
-  }, [isAuthenticated, isAuthLoading, subscribeCategories, subscribeSongs]);
+  }, [
+    isAuthenticated,
+    isAuthLoading,
+    subscribeCategories,
+    subscribeLikes,
+    subscribeSongs,
+    userId,
+  ]);
 
   const handleGoogleSignIn = async () => {
     try {

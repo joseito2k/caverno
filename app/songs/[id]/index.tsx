@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { Alert, View, Text } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Icon } from "@/components/Icon";
@@ -234,15 +234,31 @@ const CustomHandle = () => (
 );
 
 function LikeButton({ songId }: { songId: string }) {
+  const [isSaving, setIsSaving] = React.useState(false);
   const isLiked = useLikesStore((s) => s.likedIds.includes(songId));
   const toggle = useLikesStore((s) => s.toggle);
 
+  const handleToggle = async () => {
+    setIsSaving(true);
+    try {
+      await toggle(songId);
+    } catch (error) {
+      Alert.alert(
+        "Like not saved",
+        error instanceof Error ? error.message : "Unable to save your like.",
+      );
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
   return (
     <IconButton
-      onPress={() => toggle(songId)}
+      onPress={handleToggle}
       source={Favorite}
       size={22}
       tint={isLiked ? "#EF4444" : "#FFFFFF"}
+      enabled={!isSaving}
     />
   );
 }
