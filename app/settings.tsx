@@ -101,15 +101,15 @@ export default function SettingsScreen() {
             {categories.map((category) => (
               <View
                 key={category.id}
-                className="mb-2 flex-row items-center rounded-xl bg-[#121821] px-4 py-2"
+                className="flex-row items-center border-b border-gray-800 py-2"
               >
-                <Text className="flex-1 text-white text-base font-medium">
+                <Text className="flex-1 text-white text-lg font-medium">
                   {category.name ?? category.id}
                 </Text>
                 <Pressable
                   accessibilityRole="button"
                   accessibilityLabel={`Delete ${category.name ?? "category"}`}
-                  className="h-11 w-11 items-center justify-center rounded-full bg-gray-800"
+                  className="h-11 w-11 items-center justify-center rounded-full"
                   onPress={() =>
                     handleDeleteCategory(
                       category.id,
@@ -117,7 +117,7 @@ export default function SettingsScreen() {
                     )
                   }
                 >
-                  <Icon source={Delete} size={22} tint="#D1D5DB" />
+                  <Icon source={Delete} size={20} tint="#9CA3AF" />
                 </Pressable>
               </View>
             ))}

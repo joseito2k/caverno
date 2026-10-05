@@ -176,8 +176,8 @@ export default function Song() {
             </Text>
           </View>
 
-          <BottomSheetScrollView>
-            <View className="pt-6" style={{ backgroundColor: "#1f2937" }}>
+          <BottomSheetScrollView contentContainerClassName="flex-1">
+            <View className="py-6 flex-1" style={{ backgroundColor: "#1f2937" }}>
               <View className="flex-row items-center gap-2 mb-4 px-6">
                 <Icon source={MusicNote} size={24} tint="#FFFFFF" />
                 <Text className="text-white text-xl font-bold">Lyrics</Text>
