@@ -1,5 +1,6 @@
 import { useRef, useCallback, useEffect, useState } from "react";
-import { View, Text as RNText, Pressable, Keyboard } from "react-native";
+import { View, Text as RNText, Pressable } from "react-native";
+import { KeyboardController } from "react-native-keyboard-controller";
 import {
   BottomSheetModal,
   BottomSheetFlatList,
@@ -69,8 +70,9 @@ export default function CategorySelector({
 
   const handleOpen = useCallback(() => {
     if (!disabled) {
-      Keyboard.dismiss();
-      sheetRef.current?.present();
+      void KeyboardController.dismiss().then(() =>
+        sheetRef.current?.present(),
+      );
     }
   }, [disabled]);
 
