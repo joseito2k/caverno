@@ -82,6 +82,7 @@ export default function SongsList() {
   const BottomSheetSectionList = useBottomSheetScrollableCreator();
   const isEmpty = sections.data.length === 0;
   const isSongsLoading = useStore((state) => state.isSongsLoading);
+  const isLibraryEmpty = data.length === 0;
 
   return (
     <>
@@ -112,7 +113,7 @@ export default function SongsList() {
         />
       </View>
 
-      {!isSongsLoading && isEmpty ? (
+      {!isSongsLoading && isEmpty && isLibraryEmpty ? (
         <View className="px-8 pt-4 pb-8">
           <TouchableOpacity
             onPress={() => router.push("/songs/add")}
@@ -124,6 +125,26 @@ export default function SongsList() {
               Add your first song
             </Text>
           </TouchableOpacity>
+        </View>
+      ) : null}
+      {!isSongsLoading && isEmpty && !isLibraryEmpty ? (
+        <View className="items-center px-8 pt-8 pb-6">
+          <Text className="text-white text-base font-medium">
+            {searchKeyword
+              ? "No songs match your search."
+              : "No songs found."}
+          </Text>
+          {searchKeyword ? (
+            <TouchableOpacity
+              onPress={() => setSearchKeyword("")}
+              className="mt-3 px-4 py-2"
+              activeOpacity={0.8}
+            >
+              <Text className="text-[#41a9e3] text-base font-medium">
+                Clear search
+              </Text>
+            </TouchableOpacity>
+          ) : null}
         </View>
       ) : null}
 
