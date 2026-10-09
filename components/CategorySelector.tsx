@@ -70,11 +70,16 @@ export default function CategorySelector({
 
   const handleOpen = useCallback(() => {
     if (!disabled) {
-      void KeyboardController.dismiss().then(() =>
-        sheetRef.current?.present(),
-      );
+      sheetRef.current?.present();
+      void KeyboardController.dismiss();
     }
   }, [disabled]);
+
+  const handleAnimate = useCallback((fromIndex: number) => {
+    if (fromIndex === -1) {
+      void KeyboardController.dismiss();
+    }
+  }, []);
 
   const renderBackdrop = useCallback(
     (props: BottomSheetBackdropProps) => (
@@ -170,6 +175,7 @@ export default function CategorySelector({
         snapPoints={["72%", "88%"]}
         topInset={insets.top}
         onDismiss={handleSheetDismiss}
+        onAnimate={handleAnimate}
         enablePanDownToClose
         handleComponent={CustomHandle}
         backdropComponent={renderBackdrop}
